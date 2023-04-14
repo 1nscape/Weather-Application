@@ -1,1 +1,18 @@
+* {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
 
+
+.container {
+    margin-left: 40px;
+    margin-right: 30px;
+}
+
+
+h3 {
+    font-size: large;
+}
+
+h2 {
+    font-size: medium;
+}
