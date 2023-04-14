@@ -10,9 +10,29 @@ var apiKey = 'e3aa746e7c535bde01009eef4a333aa2'
 
 var container = document.querySelector('container');
 
+function localSearch(city) {
+  var previousSearchBtn = document.createElement('button');
+  previousSearchBtn.setAttribute('class', 'btn btn-primary ');
+  previousSearchBtn.innerText = city;
 
-function getAPI (city) {
-  currentApi = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + "&units=imperial" + '&appid=' + apiKey;
+}
+
+function populateStorage() {
+  localStorage.setItem('previousSearch', JSON.stringify(previousSearch));
+}
+
+function getStorage() {
+  let storage = JSON.parse(localStorage.getItem('previousSearch'))
+  if (storage) {
+    storage.forEach(localSearch);
+  }
+}
+
+
+
+
+function forecastedApi (city) {
+  
   forecastApi = 'https://api.openweathermap.org/data/2.5/forecast?q=' + city + "&units=imperial" + '&appid=' + apiKey;
 
 
@@ -40,32 +60,41 @@ fetch(forecastApi)
    }
 }) 
 
+}
 
 
+function currentApi (city) {
+  currentApi = 'https://api.openweathermap.org/data/2.5/weather?q=' + city + "&units=imperial" + '&appid=' + apiKey;
 
+  fetch(currentApi)
+  .then(function(response){
+    if (response.ok) {
+      return response.json();
+
+    }
+    throw response.json()
+  })
+  .then((currentData) => {
+    
+    var cityLocation = currentData.name;
+    var temp = currentData.main.temp;
+    var humidity = currentData.main.humidity; 
+    var wind = currentData.wind.speed;
+
+    let currentLocation = document.createElement('p');
+    let currentTemp = document.createElement('p');
+    let currentHumidity = document.createElement('p');
+    let currentWind = document.createElement('p');
+
+    currentLocation.textContent = cityLocation + ' '; 
+    currentTemp.textContent = 'Temp ' + temp + 'F';
+    currentHumidity.textContent = 'Humidity ' + humidity + ' %';
+    currentWind.textContent = 'Wind ' + wind + ' mph'
+
+  }) 
 
 }
 
 
 
 
-
-
-
-// function weatherApi() {
-//     var weatherApiUrl = "https://api.openweathermap.org/data/3.0/onecall?&appid=e3aa746e7c535bde01009eef4a333aa2"
-//      fetch(weatherApiUrl)
-//       .then(function (response) {
-//         if (response.ok) {
-//           response.json().then(function (dataWeather) {
-//             console.log(dataWeather)
-            
-//           });
-//         } else {
-//           alert('Error: ' + response.statusText);
-//         }
-//       })
-      
-//   }
-  
-//   weatherApi();
